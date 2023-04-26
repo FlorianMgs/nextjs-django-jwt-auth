@@ -1,0 +1,47 @@
+# Ignore compiled Python files
+__pycache__/
+*.py[cod]
+
+# Ignore venv
+venv/
+env/
+
+# Ignore Django migration files
+*/migrations/
+*.log
+
+# Ignore SQLite database file
+*.sqlite3
+
+# Ignore Node modules
+node_modules/
+frontend/node_modules/
+
+# Ignore build artifacts
+.build/
+out/
+dist/
+.next/
+.nuxt/
+
+# Ignore environment variables
+.env
+.env.local
+.env.*.local
+.env.production
+.env.test
+.env.development.local
+
+# Ignore IDE files
+.vscode/
+.idea/
+
+# Ignore cache and lock files
+yarn.lock
+package-lock.json
+
+# Ignore macOS metadata files
+.DS_Store
+
+# Ignore Windows thumbnail cache
+Thumbs.db

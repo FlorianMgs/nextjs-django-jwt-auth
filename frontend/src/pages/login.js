@@ -39,7 +39,6 @@ const LoginPage = () => {
     <Layout
       title='httpOnly Auth | Login'
       content='Login'
-      router={router}
     >
       <h1 className='display-4 mt-5'>Login Page</h1>
       <form

@@ -12,6 +12,8 @@ import {
   AUTHENTICATED_FAILED,
   REFRESH_SUCCESS,
   REFRESH_FAILED,
+  SET_LAST_REFRESH_REQUEST,
+  CLEAR_LAST_REFRESH_REQUEST,
   SET_AUTH_LOADING,
   REMOVE_AUTH_LOADING,
 } from './types'
@@ -59,9 +61,24 @@ export const check_auth_status = () => async (dispatch) => {
   }
 }
 
-export const request_refresh = () => async (dispatch) => {
+export const request_refresh = () => async (dispatch, getState) => {
+  const { lastRefreshRequest } = getState().auth
+
+  const now = Date.now()
+  const timeLimit = 29 * 60 * 1000 // 29 minutes in milliseconds
+
+  if (lastRefreshRequest && now - lastRefreshRequest < timeLimit) {
+    // If less than 29 minutes has passed since the last request, do nothing
+    return
+  }
+
+  dispatch({
+    type: SET_LAST_REFRESH_REQUEST,
+    payload: now,
+  })
+
   try {
-    const res = await fetch('/api/authentication/refresh/', {
+    const res = await fetch('/api/authentication/refresh', {
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -69,13 +86,22 @@ export const request_refresh = () => async (dispatch) => {
     })
 
     if (res.status === 200) {
-      dispatch({ type: REFRESH_SUCCESS })
+      dispatch({
+        type: REFRESH_SUCCESS,
+      })
+      dispatch({
+        type: CLEAR_LAST_REFRESH_REQUEST,
+      })
       dispatch(check_auth_status())
     } else {
-      dispatch({ type: REFRESH_FAILED })
+      dispatch({
+        type: REFRESH_FAILED,
+      })
     }
-  } catch {
-    dispatch({ type: REFRESH_FAILED })
+  } catch (err) {
+    dispatch({
+      type: REFRESH_FAILED,
+    })
   }
 }
 

@@ -14,6 +14,8 @@ import {
   REFRESH_FAILED,
   SET_AUTH_LOADING,
   REMOVE_AUTH_LOADING,
+  SET_LAST_REFRESH_REQUEST,
+  CLEAR_LAST_REFRESH_REQUEST,
 } from '../actions/types'
 
 const initialState = {
@@ -21,6 +23,7 @@ const initialState = {
   isAuthenticated: false,
   loading: false,
   register_success: false,
+  lastRefreshRequest: null,
 }
 
 const authReducer = (state = initialState, action) => {
@@ -91,6 +94,16 @@ const authReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: false,
         user: null,
+      }
+    case SET_LAST_REFRESH_REQUEST:
+      return {
+        ...state,
+        lastRefreshRequest: payload,
+      }
+    case CLEAR_LAST_REFRESH_REQUEST:
+      return {
+        ...state,
+        lastRefreshRequest: null,
       }
     case SET_AUTH_LOADING:
       return {

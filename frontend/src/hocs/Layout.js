@@ -1,15 +1,18 @@
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { request_refresh } from '../actions/auth'
 import Head from 'next/head'
 import Navbar from '@/components/Navbar'
 
 const Layout = ({ title, content, children }) => {
   const dispatch = useDispatch()
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+
   useEffect(() => {
-    if (dispatch && dispatch !== null && dispatch !== undefined)
+    if (isAuthenticated) {
       dispatch(request_refresh())
-  }, [dispatch])
+    }
+  }, [isAuthenticated])
 
   return (
     <>
